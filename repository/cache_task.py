@@ -2,7 +2,7 @@ import json
 
 from redis import Redis
 
-from schema.task import TaskSchema
+from schema import TaskSchema
 
 
 class TaskCache:
@@ -14,7 +14,7 @@ class TaskCache:
             tasks_json = radis.lrange("tasks", 0, -1)
             return [TaskSchema.model_validate(json.loads(task)) for task in tasks_json]
 
-    def set_tasks(self, tasks: list[TaskSchema]):
-        tasks_json = [task.model_dump_json() for task in tasks]
-        with self.redis as redis:
-            redis.lpush("tasks", *tasks_json)
+    def set_tasks(self, tasks: list[TaskSchema] | None):
+        if tasks_json := [task.model_dump_json() for task in tasks]:
+            with self.redis as redis:
+                redis.lpush("tasks", *tasks_json)
