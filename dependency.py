@@ -1,6 +1,6 @@
 from fastapi import Depends, security, Security, HTTPException
 
-from client import GoogleClient
+from client import GoogleClient, YandexClient
 from database import get_db_session
 from sqlalchemy.orm import Session
 
@@ -39,14 +39,20 @@ def get_google_client() -> GoogleClient:
     return GoogleClient(settings=Settings())
 
 
+def get_yandex_client() -> YandexClient:
+    return YandexClient(settings=Settings())
+
+
 def get_auth_service(
     user_repository: UserRepository = Depends(get_user_repository),
-    google_client: GoogleClient = Depends(get_google_client)
+    google_client: GoogleClient = Depends(get_google_client),
+    yandex_client: YandexClient = Depends(get_yandex_client)
 ) -> AuthService:
     return AuthService(
         user_repository=user_repository,
         settings=Settings(),
-        google_client=google_client
+        google_client=google_client,
+        yandex_client=yandex_client,
     )
 
 

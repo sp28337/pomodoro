@@ -17,4 +17,4 @@ class TaskCache:
     def set_tasks(self, tasks: list[TaskSchema] | None):
         if tasks_json := [task.model_dump_json() for task in tasks]:
             with self.redis as redis:
-                redis.lpush("tasks", *tasks_json)
+                redis.lpush("tasks", *tasks_json, )

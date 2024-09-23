@@ -12,8 +12,10 @@ class GoogleClient:
     def get_user_info(self, code: str) -> GoogleUserData:
         access_token = self._get_user_access_token(code=code)
         user_info = requests.get(
-            "https://www.googleapis.com/oauth2/v1/userinfo",
-            headers={"Authorization": f"Bearer {access_token}"}
+            url="https://www.googleapis.com/oauth2/v1/userinfo",
+            headers={
+                "Authorization": f"Bearer {access_token}",
+            }
         )
         return GoogleUserData(**user_info.json(), access_token=access_token)
 
