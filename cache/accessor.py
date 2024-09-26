@@ -1,4 +1,4 @@
-import redis as r
+from redis import asyncio as r
 
 from settings import Settings
 
